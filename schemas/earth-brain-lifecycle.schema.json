@@ -1,0 +1,339 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "schemas/earth-brain-lifecycle.schema.json",
+"title": "Earth Brain Lifecycle Schema",
+"description": "Schema for defining lifecycle states and transitions in Earth Brain OS v0.3 Lifecycle State Machine.",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"lifecycle_id",
+"version",
+"earth_brain_event_id",
+"lifecycle_model",
+"current_state",
+"initial_state",
+"allowed_states",
+"transition_rules",
+"transition_history",
+"status"
+],
+"properties": {
+"lifecycle_id": {
+"type": "string",
+"description": "Unique identifier for this lifecycle record.",
+"examples": [
+"earth-brain-lifecycle-001"
+]
+},
+"version": {
+"type": "string",
+"description": "Version of the lifecycle schema or lifecycle model.",
+"pattern": "^v[0-9]+\.[0-9]+(\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
+"examples": [
+"v0.3.0"
+]
+},
+"earth_brain_event_id": {
+"type": "string",
+"description": "Reference to the Earth Brain event governed by this lifecycle.",
+"examples": [
+"earth-brain-event-001"
+]
+},
+"lifecycle_model": {
+"type": "string",
+"description": "Canonical lifecycle model name.",
+"const": "Earth Brain Lifecycle State Machine"
+},
+"initial_state": {
+"type": "string",
+"description": "Initial state of the Earth Brain event lifecycle.",
+"enum": [
+"intake",
+"draft"
+]
+},
+"current_state": {
+"type": "string",
+"description": "Current lifecycle state of the Earth Brain event.",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"allowed_states": {
+"type": "array",
+"description": "Allowed lifecycle states for this model.",
+"minItems": 1,
+"uniqueItems": true,
+"items": {
+"type": "string",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+}
+},
+"transition_rules": {
+"type": "array",
+"description": "Allowed state transition rules for the lifecycle model.",
+"minItems": 1,
+"items": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"from_state",
+"to_state",
+"condition",
+"requires_review"
+],
+"properties": {
+"from_state": {
+"type": "string",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"to_state": {
+"type": "string",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"condition": {
+"type": "string",
+"description": "Condition required for this transition.",
+"examples": [
+"Schema validation passes."
+]
+},
+"requires_review": {
+"type": "boolean",
+"description": "Whether this transition requires human or governance review."
+},
+"review_type": {
+"type": "string",
+"description": "Optional review type required for this transition.",
+"enum": [
+"none",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"multi_layer_review"
+]
+}
+}
+}
+},
+"transition_history": {
+"type": "array",
+"description": "Actual transition history for the referenced Earth Brain event.",
+"minItems": 1,
+"items": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"transition_id",
+"timestamp",
+"from_state",
+"to_state",
+"transition_actor",
+"transition_reason"
+],
+"properties": {
+"transition_id": {
+"type": "string",
+"description": "Unique identifier for this transition record.",
+"examples": [
+"transition-001"
+]
+},
+"timestamp": {
+"type": "string",
+"format": "date-time",
+"description": "Timestamp when this state transition occurred."
+},
+"from_state": {
+"type": "string",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"to_state": {
+"type": "string",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"transition_actor": {
+"type": "string",
+"description": "Actor that initiated or approved the transition.",
+"enum": [
+"human_operator",
+"ai_agent_layer",
+"validation_script",
+"governance_reviewer",
+"defense_reviewer",
+"circulation_reviewer",
+"system"
+]
+},
+"transition_reason": {
+"type": "string",
+"description": "Human-readable reason for the transition."
+},
+"validation_result": {
+"type": "string",
+"description": "Optional validation result associated with this transition.",
+"enum": [
+"not_applicable",
+"passed",
+"failed",
+"warning",
+"manual_override"
+]
+},
+"review_reference": {
+"type": "string",
+"description": "Optional reference to a review, trace, governance, defense, or circulation record."
+}
+}
+}
+},
+"review_boundaries": {
+"type": "object",
+"description": "Review boundaries for high-impact lifecycle transitions.",
+"additionalProperties": false,
+"properties": {
+"human_review_required": {
+"type": "boolean"
+},
+"governance_review_required": {
+"type": "boolean"
+},
+"defense_review_required": {
+"type": "boolean"
+},
+"circulation_review_required": {
+"type": "boolean"
+},
+"automatic_completion_allowed": {
+"type": "boolean"
+}
+}
+},
+"terminal_states": {
+"type": "array",
+"description": "States that end the active lifecycle flow.",
+"minItems": 1,
+"uniqueItems": true,
+"items": {
+"type": "string",
+"enum": [
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+}
+},
+"status": {
+"type": "string",
+"description": "Status of this lifecycle record.",
+"enum": [
+"draft",
+"active",
+"review_required",
+"completed",
+"deprecated"
+]
+},
+"notes": {
+"type": "string",
+"description": "Optional notes about this lifecycle record."
+}
+}
+}
