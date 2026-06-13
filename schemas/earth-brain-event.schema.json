@@ -1,6 +1,6 @@
 {
 "$schema": "https://json-schema.org/draft/2020-12/schema",
-"$id": "schemas/earth-brain-event.schema.json",
+"$id": "earth-brain-event.schema.json",
 "title": "Earth Brain Event Schema",
 "description": "Integrated Earth Brain OS v0.2 event schema using Modular Event Architecture. This schema references independent layer schemas through $ref.",
 "type": "object",
