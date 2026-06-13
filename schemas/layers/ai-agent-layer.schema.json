@@ -1,6 +1,6 @@
 {
 "$schema": "https://json-schema.org/draft/2020-12/schema",
-"$id": "schemas/layers/ai-agent-layer.schema.json",
+"$id": "ai-agent-layer.schema.json",
 "title": "AI Agent Layer Schema",
 "description": "Schema for the AI Agent Layer in Earth Brain OS v0.2 Modular Event Architecture.",
 "type": "object",
@@ -38,7 +38,7 @@
 "layer_version": {
 "type": "string",
 "description": "Version of this layer schema or implementation.",
-"pattern": "^v[0-9]+\.[0-9]+(\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
+"pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
 "examples": [
 "v0.2.0"
 ]
