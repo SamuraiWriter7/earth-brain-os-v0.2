@@ -6,6 +6,254 @@ This repository follows a candidate-based release flow for schema and reference 
 
 ---
 
+## [v0.4.0-candidate] - 2026-06-13
+
+### Added
+
+* Introduced **Bidirectional Event Flow** as the core design direction for v0.4.
+* Added bidirectional flow schema:
+
+```text
+schemas/earth-brain-bidirectional-flow.schema.json
+```
+
+* Added bidirectional flow example:
+
+```text
+examples/earth-brain-bidirectional-flow.example.yaml
+```
+
+* Added bidirectional flow documentation:
+
+```text
+docs/bidirectional-event-flow.md
+```
+
+* Updated validation script to include bidirectional flow example validation:
+
+```text
+scripts/validate_examples.py
+```
+
+* Updated README to reflect v0.4 architecture, bidirectional flow schema, documentation, examples, and roadmap.
+
+### Architecture
+
+* Extended v0.3 Lifecycle State Machine with bidirectional layer-to-layer event movement.
+
+```text
+v0.2 = Modular Event Architecture
+       Layer schemas are separated and referenced through $ref.
+
+v0.3 = Lifecycle State Machine
+       Events gain states, transition rules, transition history,
+       review boundaries, and terminal states.
+
+v0.4 = Bidirectional Event Flow
+       Events move forward and return across layers through feedback,
+       trace, review, defense, governance, and human correction paths.
+```
+
+* Defined the bidirectional flow schema as a movement companion to the event and lifecycle schemas.
+
+```text
+schemas/earth-brain-event.schema.json
+= Defines the modular event structure.
+
+schemas/earth-brain-lifecycle.schema.json
+= Defines how an event moves through states and transitions.
+
+schemas/earth-brain-bidirectional-flow.schema.json
+= Defines how an event moves forward and returns across layers.
+```
+
+### Flow Model
+
+* Added canonical flow model:
+
+```text
+Earth Brain Bidirectional Event Flow
+```
+
+* Added support for:
+
+```text
+flow_id
+version
+flow_model
+earth_brain_event_id
+lifecycle_id
+flow_purpose
+active_direction
+participating_layers
+flow_edges
+return_paths
+review_boundaries
+flow_summary
+status
+```
+
+### Active Direction
+
+* Added active direction states:
+
+```text
+forward
+return
+feedback_loop
+suspended
+```
+
+### Participating Layers
+
+* Added supported flow layers:
+
+```text
+human_governance_layer
+ai_agent_layer
+optical_nervous_layer
+knowledge_cortex_layer
+trace_attribution_layer
+royalty_circulation_layer
+kazene_regulation_layer
+defense_immune_layer
+external_system_layer
+```
+
+### Flow Edges
+
+* Added directed flow edges with:
+
+```text
+edge_id
+direction
+source_layer
+target_layer
+signal_type
+condition
+trace_required
+review_required
+lifecycle_state_hint
+notes
+```
+
+* Added edge directions:
+
+```text
+forward
+return
+feedback
+```
+
+### Signal Types
+
+* Added supported signal types:
+
+```text
+human_intent
+ai_reasoning_request
+ai_response
+trace_update
+validation_result
+review_request
+governance_signal
+defense_signal
+circulation_signal
+regulation_signal
+feedback_signal
+suspension_signal
+```
+
+### Return Paths
+
+* Added return path modeling with:
+
+```text
+path_id
+return_type
+from_layer
+to_layer
+trigger
+requires_human_attention
+trace_reference
+```
+
+* Added return types:
+
+```text
+human_feedback
+governance_feedback
+defense_feedback
+trace_feedback
+circulation_feedback
+kazene_regulation_feedback
+error_feedback
+suspension_feedback
+```
+
+### Review Boundaries
+
+* Added bidirectional review boundary fields:
+
+```text
+human_review_on_return_required
+governance_review_on_policy_change_required
+defense_review_on_risk_required
+trace_required_for_all_edges
+automatic_forward_flow_allowed
+automatic_return_flow_allowed
+```
+
+### Validation
+
+* Updated `scripts/validate_examples.py` to validate:
+
+```text
+examples/earth-brain-event.example.yaml
+→ schemas/earth-brain-event.schema.json
+
+examples/earth-brain-lifecycle.example.yaml
+→ schemas/earth-brain-lifecycle.schema.json
+
+examples/earth-brain-bidirectional-flow.example.yaml
+→ schemas/earth-brain-bidirectional-flow.schema.json
+```
+
+* Maintained compatibility with the existing GitHub Actions workflow:
+
+```text
+.github/workflows/validate-examples.yml
+```
+
+### Documentation
+
+* Added `docs/bidirectional-event-flow.md` to explain:
+
+  * purpose of bidirectional flow
+  * participating layers
+  * active direction
+  * forward flow
+  * return flow
+  * feedback loops
+  * defense interruption
+  * trace feedback
+  * human feedback
+  * flow edges
+  * signal types
+  * return paths
+  * review boundaries
+  * relationship to v0.2, v0.3, and future v0.5
+
+### Design Notes
+
+* v0.4 does not require a new repository because it builds directly on the v0.2 modular architecture and v0.3 lifecycle model.
+* v0.4 turns Earth Brain OS from a one-way event model into a bidirectional circulatory architecture.
+* Return paths are treated as first-class schema objects, not informal comments.
+* Defense is modeled as an interrupt-and-redirect layer, not merely a blocking wall.
+* Human feedback is modeled as part of the system flow, not external to it.
+
+---
+
 ## [v0.3.0-candidate] - 2026-06-13
 
 ### Added
@@ -50,16 +298,6 @@ v0.3 = Lifecycle State Machine
        review boundaries, and terminal states.
 ```
 
-* Defined the lifecycle schema as a procedural companion to the modular event schema.
-
-```text
-schemas/earth-brain-event.schema.json
-= Defines the modular event structure.
-
-schemas/earth-brain-lifecycle.schema.json
-= Defines how an event moves through states and transitions.
-```
-
 ### Lifecycle States
 
 * Added the following lifecycle states:
@@ -84,42 +322,11 @@ suspended
 
 ### Transition Model
 
-* Added support for transition rules including:
-
-```text
-from_state
-to_state
-condition
-requires_review
-review_type
-```
-
-* Added support for transition history including:
-
-```text
-transition_id
-timestamp
-from_state
-to_state
-transition_actor
-transition_reason
-validation_result
-review_reference
-```
+* Added support for transition rules and transition history.
 
 ### Review Boundaries
 
-* Added review boundary fields for:
-
-```text
-human_review_required
-governance_review_required
-defense_review_required
-circulation_review_required
-automatic_completion_allowed
-```
-
-* Established the principle that high-impact events should not silently complete without review.
+* Added review boundary fields for human, governance, defense, and circulation review.
 
 ### Terminal States
 
@@ -131,47 +338,6 @@ archived
 rejected
 suspended
 ```
-
-These terminal states end the active lifecycle flow while preserving lifecycle history.
-
-### Validation
-
-* Updated `scripts/validate_examples.py` to validate:
-
-```text
-examples/earth-brain-event.example.yaml
-→ schemas/earth-brain-event.schema.json
-
-examples/earth-brain-lifecycle.example.yaml
-→ schemas/earth-brain-lifecycle.schema.json
-```
-
-* Maintained compatibility with the existing GitHub Actions workflow:
-
-```text
-.github/workflows/validate-examples.yml
-```
-
-### Documentation
-
-* Added `docs/event-lifecycle-state-machine.md` to explain:
-
-  * lifecycle purpose
-  * state definitions
-  * default transition flow
-  * alternative review paths
-  * transition rules
-  * transition history
-  * transition actors
-  * review boundaries
-  * terminal states
-  * relationship to v0.2, v0.4, and v0.5
-
-### Design Notes
-
-* v0.3 does not require a new repository because it builds directly on the v0.2 modular architecture.
-* v0.3 adds time, movement, and procedural memory to modular events.
-* The lifecycle model is designed to remain compatible with future layer modules.
 
 ---
 
@@ -241,20 +407,6 @@ schemas/earth-brain-event.schema.json
 ### AI Agent Layer
 
 * Added the first independent layer module: **AI Agent Layer**.
-* Defined fields for:
-
-  * layer identity
-  * agent role
-  * agent type
-  * autonomy level
-  * interaction scope
-  * input channels
-  * output channels
-  * reasoning modes
-  * trace requirements
-  * governance constraints
-  * human review boundary
-  * operational status
 
 ### Validation
 
@@ -270,12 +422,6 @@ schemas/earth-brain-event.schema.json
   * manual workflow dispatch
 
 * Confirmed that the initial validation pipeline passes with the AI Agent Layer module.
-
-### Design Notes
-
-* v0.2 is maintained as a separate repository because the modular `$ref` architecture changes the structure of the system significantly from v0.1.
-* The staged modular approach is intended to reduce schema coupling, improve validation stability, and allow new layers to be added one at a time.
-* The first validated module is the AI Agent Layer, which serves as the routing and reasoning interface for future Earth Brain OS layers.
 
 ---
 
@@ -311,9 +457,12 @@ Focus:
 
 Focus:
 
-* human-to-AI event flow
-* AI-to-governance feedback
-* regulation and defense return paths
+* forward flow
+* return flow
+* feedback loops
+* defense interruption
+* trace feedback
+* human review return paths
 
 ### v0.5
 
@@ -334,10 +483,11 @@ Focus:
 ## Repository Status
 
 ```text
-Version: v0.3.0-candidate
-Architecture: Modular Event Architecture + Lifecycle State Machine
+Version: v0.4.0-candidate
+Architecture: Modular Event Architecture + Lifecycle State Machine + Bidirectional Event Flow
 Current module: AI Agent Layer
 Lifecycle model: Enabled
+Bidirectional flow model: Enabled
 Validation: Passing
 ```
 
