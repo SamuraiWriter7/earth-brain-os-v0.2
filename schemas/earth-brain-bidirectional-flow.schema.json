@@ -1,0 +1,377 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "schemas/earth-brain-bidirectional-flow.schema.json",
+"title": "Earth Brain Bidirectional Event Flow Schema",
+"description": "Schema for defining bidirectional event flows across Earth Brain OS layers in v0.4.",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"flow_id",
+"version",
+"flow_model",
+"earth_brain_event_id",
+"lifecycle_id",
+"flow_purpose",
+"active_direction",
+"participating_layers",
+"flow_edges",
+"return_paths",
+"review_boundaries",
+"status"
+],
+"properties": {
+"flow_id": {
+"type": "string",
+"description": "Unique identifier for this bidirectional flow record.",
+"examples": [
+"earth-brain-flow-001"
+]
+},
+"version": {
+"type": "string",
+"description": "Version of the bidirectional flow schema or model.",
+"pattern": "^v[0-9]+\.[0-9]+(\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
+"examples": [
+"v0.4.0"
+]
+},
+"flow_model": {
+"type": "string",
+"description": "Canonical name of the bidirectional flow model.",
+"const": "Earth Brain Bidirectional Event Flow"
+},
+"earth_brain_event_id": {
+"type": "string",
+"description": "Reference to the Earth Brain event associated with this flow.",
+"examples": [
+"earth-brain-event-001"
+]
+},
+"lifecycle_id": {
+"type": "string",
+"description": "Reference to the lifecycle record associated with this flow.",
+"examples": [
+"earth-brain-lifecycle-001"
+]
+},
+"flow_purpose": {
+"type": "string",
+"description": "Human-readable purpose of this bidirectional event flow.",
+"examples": [
+"Define how a human prompt is processed by the AI Agent Layer and returned through trace, review, governance, and human feedback paths."
+]
+},
+"active_direction": {
+"type": "string",
+"description": "Current dominant direction of the event flow.",
+"enum": [
+"forward",
+"return",
+"feedback_loop",
+"suspended"
+]
+},
+"participating_layers": {
+"type": "array",
+"description": "Earth Brain OS layers participating in this bidirectional flow.",
+"minItems": 2,
+"uniqueItems": true,
+"items": {
+"type": "string",
+"enum": [
+"human_governance_layer",
+"ai_agent_layer",
+"optical_nervous_layer",
+"knowledge_cortex_layer",
+"trace_attribution_layer",
+"royalty_circulation_layer",
+"kazene_regulation_layer",
+"defense_immune_layer",
+"external_system_layer"
+]
+}
+},
+"flow_edges": {
+"type": "array",
+"description": "Directed edges representing event movement between layers.",
+"minItems": 1,
+"items": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"edge_id",
+"direction",
+"source_layer",
+"target_layer",
+"signal_type",
+"condition",
+"trace_required",
+"review_required"
+],
+"properties": {
+"edge_id": {
+"type": "string",
+"description": "Unique identifier for this flow edge.",
+"examples": [
+"flow-edge-001"
+]
+},
+"direction": {
+"type": "string",
+"description": "Direction of the event flow edge.",
+"enum": [
+"forward",
+"return",
+"feedback"
+]
+},
+"source_layer": {
+"type": "string",
+"description": "Layer where this flow edge starts.",
+"enum": [
+"human_governance_layer",
+"ai_agent_layer",
+"optical_nervous_layer",
+"knowledge_cortex_layer",
+"trace_attribution_layer",
+"royalty_circulation_layer",
+"kazene_regulation_layer",
+"defense_immune_layer",
+"external_system_layer"
+]
+},
+"target_layer": {
+"type": "string",
+"description": "Layer where this flow edge ends.",
+"enum": [
+"human_governance_layer",
+"ai_agent_layer",
+"optical_nervous_layer",
+"knowledge_cortex_layer",
+"trace_attribution_layer",
+"royalty_circulation_layer",
+"kazene_regulation_layer",
+"defense_immune_layer",
+"external_system_layer"
+]
+},
+"signal_type": {
+"type": "string",
+"description": "Type of signal or event moving through this edge.",
+"enum": [
+"human_intent",
+"ai_reasoning_request",
+"ai_response",
+"trace_update",
+"validation_result",
+"review_request",
+"governance_signal",
+"defense_signal",
+"circulation_signal",
+"regulation_signal",
+"feedback_signal",
+"suspension_signal"
+]
+},
+"condition": {
+"type": "string",
+"description": "Condition under which this flow edge is activated.",
+"examples": [
+"AI agent completes trace-aware reasoning and requests human review."
+]
+},
+"trace_required": {
+"type": "boolean",
+"description": "Whether this edge requires trace recording."
+},
+"review_required": {
+"type": "boolean",
+"description": "Whether this edge requires review before continuation."
+},
+"lifecycle_state_hint": {
+"type": "string",
+"description": "Optional lifecycle state associated with this edge.",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"notes": {
+"type": "string",
+"description": "Optional notes about this flow edge."
+}
+}
+}
+},
+"return_paths": {
+"type": "array",
+"description": "Return paths that carry review, feedback, regulation, defense, or governance signals back toward human or AI layers.",
+"minItems": 1,
+"items": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"path_id",
+"return_type",
+"from_layer",
+"to_layer",
+"trigger",
+"requires_human_attention"
+],
+"properties": {
+"path_id": {
+"type": "string",
+"description": "Unique identifier for this return path.",
+"examples": [
+"return-path-001"
+]
+},
+"return_type": {
+"type": "string",
+"description": "Type of return flow.",
+"enum": [
+"human_feedback",
+"governance_feedback",
+"defense_feedback",
+"trace_feedback",
+"circulation_feedback",
+"kazene_regulation_feedback",
+"error_feedback",
+"suspension_feedback"
+]
+},
+"from_layer": {
+"type": "string",
+"description": "Layer where the return path starts.",
+"enum": [
+"human_governance_layer",
+"ai_agent_layer",
+"optical_nervous_layer",
+"knowledge_cortex_layer",
+"trace_attribution_layer",
+"royalty_circulation_layer",
+"kazene_regulation_layer",
+"defense_immune_layer",
+"external_system_layer"
+]
+},
+"to_layer": {
+"type": "string",
+"description": "Layer where the return path ends.",
+"enum": [
+"human_governance_layer",
+"ai_agent_layer",
+"optical_nervous_layer",
+"knowledge_cortex_layer",
+"trace_attribution_layer",
+"royalty_circulation_layer",
+"kazene_regulation_layer",
+"defense_immune_layer",
+"external_system_layer"
+]
+},
+"trigger": {
+"type": "string",
+"description": "Trigger condition for this return path.",
+"examples": [
+"Human review requests clarification from the AI Agent Layer."
+]
+},
+"requires_human_attention": {
+"type": "boolean",
+"description": "Whether this return path requires explicit human attention."
+},
+"trace_reference": {
+"type": "string",
+"description": "Optional reference to a trace or review record."
+}
+}
+}
+},
+"review_boundaries": {
+"type": "object",
+"description": "Review boundaries that constrain bidirectional event movement.",
+"additionalProperties": false,
+"required": [
+"human_review_on_return_required",
+"governance_review_on_policy_change_required",
+"defense_review_on_risk_required",
+"trace_required_for_all_edges"
+],
+"properties": {
+"human_review_on_return_required": {
+"type": "boolean",
+"description": "Whether return flows to the human layer require human review."
+},
+"governance_review_on_policy_change_required": {
+"type": "boolean",
+"description": "Whether policy-changing flows require governance review."
+},
+"defense_review_on_risk_required": {
+"type": "boolean",
+"description": "Whether risky flows require defense review."
+},
+"trace_required_for_all_edges": {
+"type": "boolean",
+"description": "Whether all flow edges require trace records."
+},
+"automatic_forward_flow_allowed": {
+"type": "boolean",
+"description": "Whether forward flow may proceed automatically when validation passes."
+},
+"automatic_return_flow_allowed": {
+"type": "boolean",
+"description": "Whether return flow may proceed automatically without human review."
+}
+}
+},
+"flow_summary": {
+"type": "object",
+"description": "Optional summary of the bidirectional event flow.",
+"additionalProperties": false,
+"properties": {
+"forward_path": {
+"type": "string",
+"description": "Human-readable summary of the forward path."
+},
+"return_path": {
+"type": "string",
+"description": "Human-readable summary of the return path."
+},
+"feedback_loop_enabled": {
+"type": "boolean",
+"description": "Whether this flow supports iterative feedback loops."
+}
+}
+},
+"status": {
+"type": "string",
+"description": "Operational status of this bidirectional flow record.",
+"enum": [
+"draft",
+"active",
+"review_required",
+"suspended",
+"completed",
+"deprecated"
+]
+},
+"notes": {
+"type": "string",
+"description": "Optional notes about this bidirectional flow record."
+}
+}
+}
