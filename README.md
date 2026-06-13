@@ -1,8 +1,8 @@
-# Earth Brain OS v0.4
+# Earth Brain OS v0.5
 
-**Bidirectional Event Flow for a modular civilizational OS-style reference model.**
+**Event Processing Pipeline for a modular civilizational OS-style reference model.**
 
-Earth Brain OS v0.4 extends the v0.3 Lifecycle State Machine by adding bidirectional event flow across modular layers.
+Earth Brain OS v0.5 extends the v0.4 Bidirectional Event Flow by adding an operational event processing pipeline.
 
 Earth Brain OS is a reference architecture for describing layered AI, optical infrastructure, knowledge, trace attribution, royalty circulation, Kazene-style regulation, defense immunity, and human governance systems.
 
@@ -29,6 +29,10 @@ v0.3 = Lifecycle State Machine
 v0.4 = Bidirectional Event Flow
        Events move forward and return across layers through feedback,
        trace, review, defense, governance, and human correction paths.
+
+v0.5 = Event Processing Pipeline
+       Events move through an operational sequence:
+       intake → validation → routing → processing → trace → review → completion → archive.
 ```
 
 In short:
@@ -37,11 +41,13 @@ In short:
 v0.2 = What layers exist?
 v0.3 = How does an event move through states?
 v0.4 = How do layers send events forward and return signals back?
+v0.5 = How is an event actually processed from entry to memory?
 ```
 
 v0.2 gives Earth Brain OS its modular body.
 v0.3 gives that body pulse and procedural memory.
 v0.4 gives the system circulation and return flow.
+v0.5 gives the system an operational backbone.
 
 ---
 
@@ -83,6 +89,13 @@ schemas/earth-brain-bidirectional-flow.schema.json
 └─ defines forward and return paths across Earth Brain OS layers
 ```
 
+v0.5 adds processing pipeline modeling:
+
+```text
+schemas/earth-brain-processing-pipeline.schema.json
+└─ defines the operational sequence from intake to archive
+```
+
 ---
 
 ## Current Repository Structure
@@ -95,15 +108,18 @@ earth-brain-os/
 │  ├─ earth-brain-event.schema.json
 │  ├─ earth-brain-lifecycle.schema.json
 │  ├─ earth-brain-bidirectional-flow.schema.json
+│  ├─ earth-brain-processing-pipeline.schema.json
 │  └─ layers/
 │     └─ ai-agent-layer.schema.json
 ├─ examples/
 │  ├─ earth-brain-event.example.yaml
 │  ├─ earth-brain-lifecycle.example.yaml
-│  └─ earth-brain-bidirectional-flow.example.yaml
+│  ├─ earth-brain-bidirectional-flow.example.yaml
+│  └─ earth-brain-processing-pipeline.example.yaml
 ├─ docs/
 │  ├─ event-lifecycle-state-machine.md
-│  └─ bidirectional-event-flow.md
+│  ├─ bidirectional-event-flow.md
+│  └─ event-processing-pipeline.md
 ├─ scripts/
 │  └─ validate_examples.py
 └─ .github/
@@ -225,6 +241,32 @@ This schema prevents Earth Brain OS events from becoming one-way commands.
 
 ---
 
+### Processing Pipeline Schema
+
+```text
+schemas/earth-brain-processing-pipeline.schema.json
+```
+
+The processing pipeline schema defines how an Earth Brain event is operationally processed from entry to memory.
+
+It includes:
+
+* pipeline identity
+* linked Earth Brain event ID
+* linked lifecycle ID
+* linked bidirectional flow ID
+* processing mode
+* ordered pipeline stages
+* stage transitions
+* operational controls
+* review boundaries
+* pipeline summary
+* operational status
+
+This schema turns the modular lifecycle and bidirectional flow model into an operational process model.
+
+---
+
 ## Lifecycle State Machine
 
 v0.3 introduced the following lifecycle states:
@@ -275,7 +317,7 @@ archived
 
 ## Bidirectional Event Flow
 
-v0.4 introduces bidirectional event movement.
+v0.4 introduced bidirectional event movement.
 
 A simple one-way flow looks like this:
 
@@ -297,69 +339,140 @@ The core idea is:
 
 ---
 
-## Forward Flow
+## Event Processing Pipeline
 
-The current minimal forward path is:
+v0.5 introduces the operational processing pipeline.
+
+The canonical path is:
 
 ```text
-human_governance_layer
+intake
   ↓
-ai_agent_layer
+schema_validation
   ↓
-trace_attribution_layer
+layer_routing
   ↓
-human_governance_layer
+layer_processing
+  ↓
+trace_check
+  ↓
+human_review
+  ↓
+approval
+  ↓
+completion
+  ↓
+archive
 ```
 
-This allows a human intent to be processed by the AI Agent Layer, connected to trace attribution, and returned to the human governance layer for review.
+This is the first operational backbone of Earth Brain OS.
+
+It defines how an event is:
+
+* received
+* validated
+* routed
+* processed
+* traced
+* reviewed
+* approved
+* completed
+* archived
 
 ---
 
-## Return Flow
+## Processing Modes
 
-Return flow may carry:
-
-* human feedback
-* governance feedback
-* defense feedback
-* trace feedback
-* circulation feedback
-* Kazene regulation feedback
-* error feedback
-* suspension feedback
-
-Example return paths:
+The pipeline supports the following processing modes:
 
 ```text
-human_governance_layer → ai_agent_layer
-trace_attribution_layer → ai_agent_layer
-defense_immune_layer → ai_agent_layer
+manual
+assisted
+semi_automated
+bounded_automated
+suspended
 ```
 
-This makes the system adaptive instead of merely executable.
+The current minimal example uses:
+
+```yaml
+processing_mode: "assisted"
+```
+
+This means AI agents may assist, but human review and trace boundaries remain central.
 
 ---
 
-## Defense Interruption
+## Pipeline Stages
 
-The Defense Immune Layer may interrupt the flow when risk is detected.
+The v0.5 schema supports these pipeline stages:
 
 ```text
-defense_immune_layer
-  ↓
-ai_agent_layer
+intake
+schema_validation
+layer_routing
+layer_processing
+trace_check
+human_review
+governance_review
+defense_review
+circulation_review
+approval
+completion
+archive
+suspension
 ```
 
-This can occur when an event involves:
+The minimal implemented path is:
 
-* adversarial input
-* prompt injection risk
-* manipulation attempts
-* unsafe routing
-* uncertain reasoning
-* abnormal event behavior
+```text
+intake → schema_validation → layer_routing → layer_processing → trace_check → human_review → approval → completion → archive
+```
 
-The defense layer can return safer routing signals instead of simply blocking the event.
+Optional review paths include:
+
+```text
+layer_processing → defense_review → suspension
+trace_check → governance_review → approval
+trace_check → circulation_review → approval
+human_review → rejected
+```
+
+---
+
+## Operational Controls
+
+The pipeline schema includes operational controls such as:
+
+```yaml
+operational_controls:
+  max_retry_count: 2
+  allow_manual_override: true
+  allow_pipeline_suspension: true
+  require_trace_before_completion: true
+  automatic_archive_allowed: true
+```
+
+These controls prevent the pipeline from becoming uncontrolled automation.
+
+---
+
+## Review Boundaries
+
+The pipeline schema includes review boundaries such as:
+
+```yaml
+review_boundaries:
+  human_review_required_for_high_impact: true
+  governance_review_required_for_policy_change: true
+  defense_review_required_for_risk: true
+  circulation_review_required_for_value_flow: true
+  automatic_completion_allowed: false
+```
+
+The core principle is:
+
+> Completion should not be automatic when meaning, risk, policy, or value flow changes.
 
 ---
 
@@ -380,6 +493,14 @@ docs/bidirectional-event-flow.md
 ```
 
 Explains the v0.4 bidirectional flow model.
+
+### Event Processing Pipeline
+
+```text
+docs/event-processing-pipeline.md
+```
+
+Explains the v0.5 processing pipeline model.
 
 ---
 
@@ -409,15 +530,24 @@ examples/earth-brain-bidirectional-flow.example.yaml
 
 A minimal valid bidirectional flow record linked to an Earth Brain event and lifecycle.
 
+### Earth Brain Processing Pipeline Example
+
+```text
+examples/earth-brain-processing-pipeline.example.yaml
+```
+
+A minimal valid processing pipeline record linked to an Earth Brain event, lifecycle, and bidirectional flow.
+
 Example fragment:
 
 ```yaml
-flow_id: "earth-brain-flow-001"
-version: "v0.4.0"
-flow_model: "Earth Brain Bidirectional Event Flow"
+pipeline_id: "earth-brain-pipeline-001"
+version: "v0.5.0"
+pipeline_model: "Earth Brain Event Processing Pipeline"
 earth_brain_event_id: "earth-brain-event-001"
 lifecycle_id: "earth-brain-lifecycle-001"
-active_direction: "feedback_loop"
+flow_id: "earth-brain-flow-001"
+processing_mode: "assisted"
 ```
 
 ---
@@ -441,6 +571,9 @@ examples/earth-brain-lifecycle.example.yaml
 
 examples/earth-brain-bidirectional-flow.example.yaml
 → schemas/earth-brain-bidirectional-flow.schema.json
+
+examples/earth-brain-processing-pipeline.example.yaml
+→ schemas/earth-brain-processing-pipeline.schema.json
 ```
 
 Run validation locally:
@@ -498,26 +631,35 @@ They should remember how they moved through the system.
 
 Events should be able to move forward, return, request review, trigger defense, and carry feedback.
 
-### 5. Trace-Aware by Design
+### 5. Operational Pipeline
+
+Events should have an explicit processing path from intake to archive.
+
+### 6. Trace-Aware by Design
 
 AI activity should be connected to trace, attribution, and review boundaries.
 
-### 6. Human Governance Boundary
+### 7. Human Governance Boundary
 
 AI agents may assist, route, and reason, but high-impact actions should remain connected to human review.
 
-### 7. Suspension Over Silent Failure
+### 8. Suspension Over Silent Failure
 
 Risky or uncertain events should be suspendable rather than forcibly completed or silently ignored.
 
-### 8. Defense as Circulation
+### 9. Defense as Circulation
 
 Defense should not only block events.
 It should be able to interrupt, redirect, and return safer signals.
 
-### 9. Incremental Expansion
+### 10. Archive as Memory
 
-New layers and flow mechanisms should be added one at a time, with validation passing at each step.
+Archival is not disposal.
+It is the preservation of procedural memory.
+
+### 11. Incremental Expansion
+
+New layers and processing mechanisms should be added one at a time, with validation passing at each step.
 
 ---
 
@@ -578,13 +720,41 @@ Focus:
 
 ### v0.5 — Event Processing Pipeline
 
+Implemented:
+
+```text
+schemas/earth-brain-processing-pipeline.schema.json
+docs/event-processing-pipeline.md
+examples/earth-brain-processing-pipeline.example.yaml
+```
+
+Focus:
+
+* operational pipeline stages
+* stage transitions
+* processing modes
+* operational controls
+* review boundaries
+* failure paths
+* archive as procedural memory
+
+---
+
+### v0.6 — Multi-Layer Expansion
+
 Planned direction:
 
 ```text
-intake → validation → routing → trace → review → circulation → archive
+schemas/layers/optical-nervous-layer.schema.json
+schemas/layers/knowledge-cortex-layer.schema.json
+schemas/layers/trace-attribution-layer.schema.json
+schemas/layers/royalty-circulation-layer.schema.json
+schemas/layers/kazene-regulation-layer.schema.json
+schemas/layers/defense-immune-layer.schema.json
+schemas/layers/human-governance-layer.schema.json
 ```
 
-v0.5 may define a more operational processing sequence for modular Earth Brain OS events.
+v0.6 may expand the modular layer set beyond the initial AI Agent Layer.
 
 ---
 
@@ -602,23 +772,28 @@ Earth Brain OS v0.3
 
 Earth Brain OS v0.4
 = Bidirectional event flow across modular layers
+
+Earth Brain OS v0.5
+= Operational event processing pipeline
 ```
 
 v0.1 provides the integrated conceptual map.
 v0.2 provides the modular schema architecture.
 v0.3 provides procedural movement, state, and review boundaries.
 v0.4 provides circulation, return paths, and feedback-aware flow.
+v0.5 provides the operational processing path.
 
 ---
 
 ## Status
 
 ```text
-Version: v0.4.0-candidate
-Architecture: Modular Event Architecture + Lifecycle State Machine + Bidirectional Event Flow
+Version: v0.5.0-candidate
+Architecture: Modular Event Architecture + Lifecycle State Machine + Bidirectional Event Flow + Event Processing Pipeline
 Current module: AI Agent Layer
 Lifecycle model: Enabled
 Bidirectional flow model: Enabled
+Processing pipeline model: Enabled
 Validation: GitHub Actions enabled
 ```
 
@@ -644,19 +819,22 @@ Apache License 2.0
 
 ## Summary
 
-Earth Brain OS v0.4 turns the modular lifecycle model into a bidirectional circulatory architecture.
+Earth Brain OS v0.5 turns the modular lifecycle and bidirectional flow model into an operational processing architecture.
 
 v0.2 separated the layers.
 v0.3 defined how events move through states.
-v0.4 defines how events move forward and return across layers.
+v0.4 defined how events move forward and return across layers.
+v0.5 defines how events are processed from intake to archive.
 
-The event moves forward.
-The trace returns.
-The defense interrupts.
+The event enters.
+The schema checks.
+The layer processes.
+The trace records.
 The human reviews.
-The AI refines.
-The system remembers.
+The system completes.
+The archive remembers.
 
 The goal is not to build a centralized world system.
 
 The goal is to define a readable, extensible, and verifiable reference architecture for AI-era civilization-scale event flows.
+
