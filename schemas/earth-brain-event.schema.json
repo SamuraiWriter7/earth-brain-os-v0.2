@@ -1,0 +1,83 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "schemas/earth-brain-event.schema.json",
+"title": "Earth Brain Event Schema",
+"description": "Integrated Earth Brain OS v0.2 event schema using Modular Event Architecture. This schema references independent layer schemas through $ref.",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"event_id",
+"version",
+"timestamp",
+"description",
+"layers"
+],
+"properties": {
+"event_id": {
+"type": "string",
+"description": "Unique identifier for the Earth Brain OS event.",
+"examples": [
+"earth-brain-event-001"
+]
+},
+"version": {
+"type": "string",
+"description": "Version of the Earth Brain OS event model.",
+"pattern": "^v[0-9]+\.[0-9]+(\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
+"examples": [
+"v0.2.0"
+]
+},
+"timestamp": {
+"type": "string",
+"format": "date-time",
+"description": "Timestamp when this event was created or recorded."
+},
+"description": {
+"type": "string",
+"description": "Human-readable description of the event."
+},
+"layers": {
+"type": "object",
+"description": "Layered modular event structure for Earth Brain OS.",
+"additionalProperties": false,
+"required": [
+"ai_agent_layer"
+],
+"properties": {
+"ai_agent_layer": {
+"$ref": "./layers/ai-agent-layer.schema.json"
+}
+}
+},
+"metadata": {
+"type": "object",
+"description": "Optional metadata for repository, validation, or implementation context.",
+"additionalProperties": false,
+"properties": {
+"schema_profile": {
+"type": "string",
+"enum": [
+"modular_event_architecture"
+]
+},
+"repository": {
+"type": "string",
+"description": "Optional repository name or URL."
+},
+"status": {
+"type": "string",
+"enum": [
+"draft",
+"candidate",
+"stable",
+"deprecated"
+]
+},
+"notes": {
+"type": "string"
+}
+}
+}
+}
+}
