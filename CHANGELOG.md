@@ -6,6 +6,175 @@ This repository follows a candidate-based release flow for schema and reference 
 
 ---
 
+## [v0.3.0-candidate] - 2026-06-13
+
+### Added
+
+* Introduced **Lifecycle State Machine** as the core design direction for v0.3.
+* Added lifecycle schema:
+
+```text
+schemas/earth-brain-lifecycle.schema.json
+```
+
+* Added lifecycle example:
+
+```text
+examples/earth-brain-lifecycle.example.yaml
+```
+
+* Added lifecycle documentation:
+
+```text
+docs/event-lifecycle-state-machine.md
+```
+
+* Updated validation script to include lifecycle example validation:
+
+```text
+scripts/validate_examples.py
+```
+
+* Updated README to reflect v0.3 architecture, lifecycle schema, lifecycle documentation, and roadmap.
+
+### Architecture
+
+* Extended v0.2 Modular Event Architecture with lifecycle modeling.
+
+```text
+v0.2 = Modular Event Architecture
+       Layer schemas are separated and referenced through $ref.
+
+v0.3 = Lifecycle State Machine
+       Events gain states, transition rules, transition history,
+       review boundaries, and terminal states.
+```
+
+* Defined the lifecycle schema as a procedural companion to the modular event schema.
+
+```text
+schemas/earth-brain-event.schema.json
+= Defines the modular event structure.
+
+schemas/earth-brain-lifecycle.schema.json
+= Defines how an event moves through states and transitions.
+```
+
+### Lifecycle States
+
+* Added the following lifecycle states:
+
+```text
+intake
+draft
+schema_validation
+layer_routing
+layer_processing
+trace_check
+human_review
+governance_review
+defense_review
+circulation_review
+approved
+completed
+archived
+rejected
+suspended
+```
+
+### Transition Model
+
+* Added support for transition rules including:
+
+```text
+from_state
+to_state
+condition
+requires_review
+review_type
+```
+
+* Added support for transition history including:
+
+```text
+transition_id
+timestamp
+from_state
+to_state
+transition_actor
+transition_reason
+validation_result
+review_reference
+```
+
+### Review Boundaries
+
+* Added review boundary fields for:
+
+```text
+human_review_required
+governance_review_required
+defense_review_required
+circulation_review_required
+automatic_completion_allowed
+```
+
+* Established the principle that high-impact events should not silently complete without review.
+
+### Terminal States
+
+* Added terminal states:
+
+```text
+completed
+archived
+rejected
+suspended
+```
+
+These terminal states end the active lifecycle flow while preserving lifecycle history.
+
+### Validation
+
+* Updated `scripts/validate_examples.py` to validate:
+
+```text
+examples/earth-brain-event.example.yaml
+→ schemas/earth-brain-event.schema.json
+
+examples/earth-brain-lifecycle.example.yaml
+→ schemas/earth-brain-lifecycle.schema.json
+```
+
+* Maintained compatibility with the existing GitHub Actions workflow:
+
+```text
+.github/workflows/validate-examples.yml
+```
+
+### Documentation
+
+* Added `docs/event-lifecycle-state-machine.md` to explain:
+
+  * lifecycle purpose
+  * state definitions
+  * default transition flow
+  * alternative review paths
+  * transition rules
+  * transition history
+  * transition actors
+  * review boundaries
+  * terminal states
+  * relationship to v0.2, v0.4, and v0.5
+
+### Design Notes
+
+* v0.3 does not require a new repository because it builds directly on the v0.2 modular architecture.
+* v0.3 adds time, movement, and procedural memory to modular events.
+* The lifecycle model is designed to remain compatible with future layer modules.
+
+---
+
 ## [v0.2.0-candidate] - 2026-06-13
 
 ### Added
@@ -108,28 +277,6 @@ schemas/earth-brain-event.schema.json
 * The staged modular approach is intended to reduce schema coupling, improve validation stability, and allow new layers to be added one at a time.
 * The first validated module is the AI Agent Layer, which serves as the routing and reasoning interface for future Earth Brain OS layers.
 
-### Planned
-
-Future v0.2 layer modules:
-
-```text
-schemas/layers/optical-nervous-layer.schema.json
-schemas/layers/knowledge-cortex-layer.schema.json
-schemas/layers/trace-attribution-layer.schema.json
-schemas/layers/royalty-circulation-layer.schema.json
-schemas/layers/kazene-regulation-layer.schema.json
-schemas/layers/defense-immune-layer.schema.json
-schemas/layers/human-governance-layer.schema.json
-```
-
-Planned v0.3 direction:
-
-```text
-schemas/earth-brain-lifecycle.schema.json
-docs/event-lifecycle-state-machine.md
-examples/earth-brain-lifecycle.example.yaml
-```
-
 ---
 
 ## Version Direction
@@ -152,8 +299,11 @@ Focus:
 Focus:
 
 * event lifecycle states
-* transitions
-* review and routing state changes
+* transition rules
+* transition history
+* review boundaries
+* terminal states
+* lifecycle documentation
 
 ### v0.4
 
@@ -184,8 +334,10 @@ Focus:
 ## Repository Status
 
 ```text
-Version: v0.2.0-candidate
-Architecture: Modular Event Architecture
+Version: v0.3.0-candidate
+Architecture: Modular Event Architecture + Lifecycle State Machine
 Current module: AI Agent Layer
+Lifecycle model: Enabled
 Validation: Passing
 ```
+
