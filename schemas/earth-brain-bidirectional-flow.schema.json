@@ -30,7 +30,7 @@
 "version": {
 "type": "string",
 "description": "Version of the bidirectional flow schema or model.",
-"pattern": "^v[0-9]+\.[0-9]+(\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
+"pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
 "examples": [
 "v0.4.0"
 ]
