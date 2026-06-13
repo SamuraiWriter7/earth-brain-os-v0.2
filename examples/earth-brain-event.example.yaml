@@ -1,0 +1,58 @@
+event_id: "earth-brain-event-001"
+version: "v0.2.0"
+timestamp: "2026-06-13T00:00:00Z"
+description: "Minimal Earth Brain OS v0.2 event example using the AI Agent Layer module."
+
+layers:
+ai_agent_layer:
+layer_id: "ai-agent-layer-001"
+layer_name: "AI Agent Layer"
+layer_version: "v0.2.0"
+purpose: "Coordinate AI agents that interpret, reason, assist, and route events across the Earth Brain OS."
+
+```
+agent_role: "orchestrator"
+agent_type: "human_ai_team"
+autonomy_level: "human_confirmed_action"
+
+interaction_scope:
+  - "human_governance"
+  - "knowledge_cortex"
+  - "trace_attribution"
+
+input_channels:
+  - "human_prompt"
+  - "system_event"
+  - "trace_record"
+
+output_channels:
+  - "assistant_response"
+  - "structured_event"
+  - "human_review_request"
+
+reasoning_modes:
+  - "structural_reasoning"
+  - "trace_aware_reasoning"
+  - "policy_guided_reasoning"
+
+trace_requirements:
+  input_trace_required: true
+  output_trace_required: true
+  decision_log_required: true
+  trace_reference: "trace-record-001"
+
+governance_constraints:
+  - "human_oversight_required"
+  - "policy_compliance_required"
+  - "source_attribution_required"
+
+human_review_boundary:
+  review_required: true
+  review_trigger:
+    - "high_impact_decision"
+    - "external_action"
+    - "uncertain_reasoning"
+
+status: "draft"
+notes: "Initial minimal AI Agent Layer example for Earth Brain OS v0.2 Modular Event Architecture."
+```
