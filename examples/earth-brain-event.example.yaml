@@ -52,6 +52,8 @@ layers:
         - "external_action"
         - "uncertain_reasoning"
 
+    status: "draft"
+
 metadata:
   status: "draft"
   notes: "Initial minimal AI Agent Layer example for Earth Brain OS v0.2 Modular Event Architecture."
