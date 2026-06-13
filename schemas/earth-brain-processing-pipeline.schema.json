@@ -1,0 +1,460 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "schemas/earth-brain-processing-pipeline.schema.json",
+"title": "Earth Brain Event Processing Pipeline Schema",
+"description": "Schema for defining the event processing pipeline in Earth Brain OS v0.5.",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"pipeline_id",
+"version",
+"pipeline_model",
+"earth_brain_event_id",
+"lifecycle_id",
+"flow_id",
+"pipeline_purpose",
+"processing_mode",
+"pipeline_stages",
+"stage_transitions",
+"operational_controls",
+"review_boundaries",
+"status"
+],
+"properties": {
+"pipeline_id": {
+"type": "string",
+"description": "Unique identifier for this processing pipeline record.",
+"examples": [
+"earth-brain-pipeline-001"
+]
+},
+"version": {
+"type": "string",
+"description": "Version of the event processing pipeline schema or model.",
+"pattern": "^v[0-9]+\.[0-9]+(\.[0-9]+)?(-[A-Za-z0-9.-]+)?$",
+"examples": [
+"v0.5.0"
+]
+},
+"pipeline_model": {
+"type": "string",
+"description": "Canonical name of the processing pipeline model.",
+"const": "Earth Brain Event Processing Pipeline"
+},
+"earth_brain_event_id": {
+"type": "string",
+"description": "Reference to the Earth Brain event processed by this pipeline.",
+"examples": [
+"earth-brain-event-001"
+]
+},
+"lifecycle_id": {
+"type": "string",
+"description": "Reference to the lifecycle record associated with this pipeline.",
+"examples": [
+"earth-brain-lifecycle-001"
+]
+},
+"flow_id": {
+"type": "string",
+"description": "Reference to the bidirectional flow record associated with this pipeline.",
+"examples": [
+"earth-brain-flow-001"
+]
+},
+"pipeline_purpose": {
+"type": "string",
+"description": "Human-readable purpose of this event processing pipeline.",
+"examples": [
+"Define how an Earth Brain event is received, validated, routed, traced, reviewed, circulated, and archived."
+]
+},
+"processing_mode": {
+"type": "string",
+"description": "Operational mode of the pipeline.",
+"enum": [
+"manual",
+"assisted",
+"semi_automated",
+"bounded_automated",
+"suspended"
+]
+},
+"pipeline_stages": {
+"type": "array",
+"description": "Ordered stages of the Earth Brain event processing pipeline.",
+"minItems": 1,
+"items": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"stage_id",
+"stage_name",
+"stage_order",
+"stage_type",
+"responsible_layer",
+"input_signal",
+"output_signal",
+"required_state",
+"completion_condition",
+"trace_required",
+"review_required"
+],
+"properties": {
+"stage_id": {
+"type": "string",
+"description": "Unique identifier for this pipeline stage.",
+"examples": [
+"stage-001"
+]
+},
+"stage_name": {
+"type": "string",
+"description": "Human-readable name of this pipeline stage.",
+"enum": [
+"intake",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approval",
+"completion",
+"archive",
+"suspension"
+]
+},
+"stage_order": {
+"type": "integer",
+"description": "Order of this stage in the processing pipeline.",
+"minimum": 1
+},
+"stage_type": {
+"type": "string",
+"description": "Functional type of this pipeline stage.",
+"enum": [
+"intake",
+"validation",
+"routing",
+"processing",
+"trace",
+"review",
+"approval",
+"circulation",
+"archive",
+"suspension"
+]
+},
+"responsible_layer": {
+"type": "string",
+"description": "Earth Brain OS layer primarily responsible for this stage.",
+"enum": [
+"human_governance_layer",
+"ai_agent_layer",
+"optical_nervous_layer",
+"knowledge_cortex_layer",
+"trace_attribution_layer",
+"royalty_circulation_layer",
+"kazene_regulation_layer",
+"defense_immune_layer",
+"validation_system",
+"archive_system"
+]
+},
+"input_signal": {
+"type": "string",
+"description": "Input signal accepted by this stage.",
+"enum": [
+"human_intent",
+"raw_event",
+"draft_event",
+"schema_validation_request",
+"validated_event",
+"routing_request",
+"layer_result",
+"trace_update",
+"review_request",
+"approval_signal",
+"circulation_signal",
+"archive_request",
+"risk_signal",
+"suspension_signal"
+]
+},
+"output_signal": {
+"type": "string",
+"description": "Output signal produced by this stage.",
+"enum": [
+"draft_event",
+"schema_validation_result",
+"routing_decision",
+"layer_processing_result",
+"trace_record",
+"review_result",
+"approval_signal",
+"circulation_record",
+"archive_record",
+"defense_signal",
+"suspension_signal",
+"completion_signal"
+]
+},
+"required_state": {
+"type": "string",
+"description": "Lifecycle state expected during this stage.",
+"enum": [
+"intake",
+"draft",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approved",
+"completed",
+"archived",
+"rejected",
+"suspended"
+]
+},
+"completion_condition": {
+"type": "string",
+"description": "Condition required to complete this stage.",
+"examples": [
+"Schema validation passes without errors."
+]
+},
+"trace_required": {
+"type": "boolean",
+"description": "Whether this stage requires trace recording."
+},
+"review_required": {
+"type": "boolean",
+"description": "Whether this stage requires human, governance, defense, or circulation review."
+},
+"failure_action": {
+"type": "string",
+"description": "Action to take if this stage fails.",
+"enum": [
+"retry",
+"return_to_previous_stage",
+"request_human_review",
+"route_to_defense_review",
+"suspend_pipeline",
+"reject_event",
+"archive_with_warning"
+]
+},
+"notes": {
+"type": "string",
+"description": "Optional notes about this pipeline stage."
+}
+}
+}
+},
+"stage_transitions": {
+"type": "array",
+"description": "Allowed transitions between pipeline stages.",
+"minItems": 1,
+"items": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"transition_id",
+"from_stage",
+"to_stage",
+"condition",
+"on_failure"
+],
+"properties": {
+"transition_id": {
+"type": "string",
+"description": "Unique identifier for this stage transition.",
+"examples": [
+"pipeline-transition-001"
+]
+},
+"from_stage": {
+"type": "string",
+"description": "Source pipeline stage name.",
+"enum": [
+"intake",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approval",
+"completion",
+"archive",
+"suspension"
+]
+},
+"to_stage": {
+"type": "string",
+"description": "Target pipeline stage name.",
+"enum": [
+"intake",
+"schema_validation",
+"layer_routing",
+"layer_processing",
+"trace_check",
+"human_review",
+"governance_review",
+"defense_review",
+"circulation_review",
+"approval",
+"completion",
+"archive",
+"suspension"
+]
+},
+"condition": {
+"type": "string",
+"description": "Condition under which this transition is allowed.",
+"examples": [
+"The current stage completes successfully."
+]
+},
+"on_failure": {
+"type": "string",
+"description": "Fallback path if this transition fails.",
+"enum": [
+"retry_current_stage",
+"return_to_previous_stage",
+"request_human_review",
+"route_to_defense_review",
+"suspend_pipeline",
+"reject_event",
+"archive_with_warning"
+]
+},
+"lifecycle_state_change": {
+"type": "string",
+"description": "Optional lifecycle state change associated with this pipeline transition.",
+"enum": [
+"intake_to_draft",
+"draft_to_schema_validation",
+"schema_validation_to_layer_routing",
+"layer_routing_to_layer_processing",
+"layer_processing_to_trace_check",
+"trace_check_to_human_review",
+"human_review_to_approved",
+"approved_to_completed",
+"completed_to_archived",
+"review_to_rejected",
+"risk_to_suspended",
+"not_applicable"
+]
+}
+}
+}
+},
+"operational_controls": {
+"type": "object",
+"description": "Operational controls for managing pipeline execution.",
+"additionalProperties": false,
+"required": [
+"max_retry_count",
+"allow_manual_override",
+"allow_pipeline_suspension",
+"require_trace_before_completion"
+],
+"properties": {
+"max_retry_count": {
+"type": "integer",
+"description": "Maximum number of retries allowed for a failed stage.",
+"minimum": 0
+},
+"allow_manual_override": {
+"type": "boolean",
+"description": "Whether a human operator may manually override a pipeline decision."
+},
+"allow_pipeline_suspension": {
+"type": "boolean",
+"description": "Whether the pipeline may be suspended when risk or uncertainty is detected."
+},
+"require_trace_before_completion": {
+"type": "boolean",
+"description": "Whether trace records are required before the event can be completed."
+},
+"automatic_archive_allowed": {
+"type": "boolean",
+"description": "Whether completed events may be automatically archived."
+}
+}
+},
+"review_boundaries": {
+"type": "object",
+"description": "Review boundaries applied to the pipeline.",
+"additionalProperties": false,
+"required": [
+"human_review_required_for_high_impact",
+"governance_review_required_for_policy_change",
+"defense_review_required_for_risk",
+"circulation_review_required_for_value_flow"
+],
+"properties": {
+"human_review_required_for_high_impact": {
+"type": "boolean"
+},
+"governance_review_required_for_policy_change": {
+"type": "boolean"
+},
+"defense_review_required_for_risk": {
+"type": "boolean"
+},
+"circulation_review_required_for_value_flow": {
+"type": "boolean"
+},
+"automatic_completion_allowed": {
+"type": "boolean"
+}
+}
+},
+"pipeline_summary": {
+"type": "object",
+"description": "Optional human-readable summary of this processing pipeline.",
+"additionalProperties": false,
+"properties": {
+"canonical_path": {
+"type": "string",
+"description": "Human-readable canonical processing path."
+},
+"failure_path": {
+"type": "string",
+"description": "Human-readable failure or suspension path."
+},
+"feedback_enabled": {
+"type": "boolean",
+"description": "Whether this pipeline can use feedback loops from v0.4."
+}
+}
+},
+"status": {
+"type": "string",
+"description": "Operational status of this processing pipeline record.",
+"enum": [
+"draft",
+"active",
+"review_required",
+"suspended",
+"completed",
+"deprecated"
+]
+},
+"notes": {
+"type": "string",
+"description": "Optional notes about this processing pipeline record."
+}
+}
+}
