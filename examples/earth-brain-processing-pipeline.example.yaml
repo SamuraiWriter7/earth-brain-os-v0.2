@@ -11,223 +11,222 @@ pipeline_purpose: "Define how an Earth Brain event is received, validated, route
 processing_mode: "assisted"
 
 pipeline_stages:
+  - stage_id: "stage-001"
+    stage_name: "intake"
+    stage_order: 1
+    stage_type: "intake"
+    responsible_layer: "human_governance_layer"
+    input_signal: "human_intent"
+    output_signal: "draft_event"
+    required_state: "intake"
+    completion_condition: "Human intent is received and converted into a draft Earth Brain event."
+    trace_required: true
+    review_required: false
+    failure_action: "request_human_review"
+    notes: "Initial intake stage for human-originated intent."
 
-* stage_id: "stage-001"
-  stage_name: "intake"
-  stage_order: 1
-  stage_type: "intake"
-  responsible_layer: "human_governance_layer"
-  input_signal: "human_intent"
-  output_signal: "draft_event"
-  required_state: "intake"
-  completion_condition: "Human intent is received and converted into a draft Earth Brain event."
-  trace_required: true
-  review_required: false
-  failure_action: "request_human_review"
-  notes: "Initial intake stage for human-originated intent."
+  - stage_id: "stage-002"
+    stage_name: "schema_validation"
+    stage_order: 2
+    stage_type: "validation"
+    responsible_layer: "validation_system"
+    input_signal: "draft_event"
+    output_signal: "schema_validation_result"
+    required_state: "schema_validation"
+    completion_condition: "The draft event validates against the relevant JSON Schema."
+    trace_required: true
+    review_required: false
+    failure_action: "return_to_previous_stage"
+    notes: "Validates the event structure before routing."
 
-* stage_id: "stage-002"
-  stage_name: "schema_validation"
-  stage_order: 2
-  stage_type: "validation"
-  responsible_layer: "validation_system"
-  input_signal: "draft_event"
-  output_signal: "schema_validation_result"
-  required_state: "schema_validation"
-  completion_condition: "The draft event validates against the relevant JSON Schema."
-  trace_required: true
-  review_required: false
-  failure_action: "return_to_previous_stage"
-  notes: "Validates the event structure before routing."
+  - stage_id: "stage-003"
+    stage_name: "layer_routing"
+    stage_order: 3
+    stage_type: "routing"
+    responsible_layer: "ai_agent_layer"
+    input_signal: "validated_event"
+    output_signal: "routing_decision"
+    required_state: "layer_routing"
+    completion_condition: "The validated event is routed to the appropriate modular layer."
+    trace_required: true
+    review_required: false
+    failure_action: "request_human_review"
+    notes: "Routes the event to the relevant Earth Brain OS layer."
 
-* stage_id: "stage-003"
-  stage_name: "layer_routing"
-  stage_order: 3
-  stage_type: "routing"
-  responsible_layer: "ai_agent_layer"
-  input_signal: "validated_event"
-  output_signal: "routing_decision"
-  required_state: "layer_routing"
-  completion_condition: "The validated event is routed to the appropriate modular layer."
-  trace_required: true
-  review_required: false
-  failure_action: "request_human_review"
-  notes: "Routes the event to the relevant Earth Brain OS layer."
+  - stage_id: "stage-004"
+    stage_name: "layer_processing"
+    stage_order: 4
+    stage_type: "processing"
+    responsible_layer: "ai_agent_layer"
+    input_signal: "routing_request"
+    output_signal: "layer_processing_result"
+    required_state: "layer_processing"
+    completion_condition: "The responsible layer processes the event and produces a structured result."
+    trace_required: true
+    review_required: false
+    failure_action: "route_to_defense_review"
+    notes: "Initial implementation uses the AI Agent Layer as the primary processing layer."
 
-* stage_id: "stage-004"
-  stage_name: "layer_processing"
-  stage_order: 4
-  stage_type: "processing"
-  responsible_layer: "ai_agent_layer"
-  input_signal: "routing_request"
-  output_signal: "layer_processing_result"
-  required_state: "layer_processing"
-  completion_condition: "The responsible layer processes the event and produces a structured result."
-  trace_required: true
-  review_required: false
-  failure_action: "route_to_defense_review"
-  notes: "Initial implementation uses the AI Agent Layer as the primary processing layer."
+  - stage_id: "stage-005"
+    stage_name: "trace_check"
+    stage_order: 5
+    stage_type: "trace"
+    responsible_layer: "trace_attribution_layer"
+    input_signal: "layer_result"
+    output_signal: "trace_record"
+    required_state: "trace_check"
+    completion_condition: "Trace attribution and decision logging are completed."
+    trace_required: true
+    review_required: false
+    failure_action: "request_human_review"
+    notes: "Ensures that event origin, reasoning, and output are traceable."
 
-* stage_id: "stage-005"
-  stage_name: "trace_check"
-  stage_order: 5
-  stage_type: "trace"
-  responsible_layer: "trace_attribution_layer"
-  input_signal: "layer_result"
-  output_signal: "trace_record"
-  required_state: "trace_check"
-  completion_condition: "Trace attribution and decision logging are completed."
-  trace_required: true
-  review_required: false
-  failure_action: "request_human_review"
-  notes: "Ensures that event origin, reasoning, and output are traceable."
+  - stage_id: "stage-006"
+    stage_name: "human_review"
+    stage_order: 6
+    stage_type: "review"
+    responsible_layer: "human_governance_layer"
+    input_signal: "review_request"
+    output_signal: "review_result"
+    required_state: "human_review"
+    completion_condition: "Human reviewer approves, rejects, or returns the event for refinement."
+    trace_required: true
+    review_required: true
+    failure_action: "reject_event"
+    notes: "High-impact or uncertain events require human review before approval."
 
-* stage_id: "stage-006"
-  stage_name: "human_review"
-  stage_order: 6
-  stage_type: "review"
-  responsible_layer: "human_governance_layer"
-  input_signal: "review_request"
-  output_signal: "review_result"
-  required_state: "human_review"
-  completion_condition: "Human reviewer approves, rejects, or returns the event for refinement."
-  trace_required: true
-  review_required: true
-  failure_action: "reject_event"
-  notes: "High-impact or uncertain events require human review before approval."
+  - stage_id: "stage-007"
+    stage_name: "approval"
+    stage_order: 7
+    stage_type: "approval"
+    responsible_layer: "human_governance_layer"
+    input_signal: "review_request"
+    output_signal: "approval_signal"
+    required_state: "approved"
+    completion_condition: "The reviewed event receives approval to proceed toward completion."
+    trace_required: true
+    review_required: true
+    failure_action: "reject_event"
+    notes: "Approval confirms that the event may be finalized."
 
-* stage_id: "stage-007"
-  stage_name: "approval"
-  stage_order: 7
-  stage_type: "approval"
-  responsible_layer: "human_governance_layer"
-  input_signal: "review_request"
-  output_signal: "approval_signal"
-  required_state: "approved"
-  completion_condition: "The reviewed event receives approval to proceed toward completion."
-  trace_required: true
-  review_required: true
-  failure_action: "reject_event"
-  notes: "Approval confirms that the event may be finalized."
+  - stage_id: "stage-008"
+    stage_name: "completion"
+    stage_order: 8
+    stage_type: "processing"
+    responsible_layer: "ai_agent_layer"
+    input_signal: "approval_signal"
+    output_signal: "completion_signal"
+    required_state: "completed"
+    completion_condition: "The approved event is finalized as a completed Earth Brain event."
+    trace_required: true
+    review_required: false
+    failure_action: "archive_with_warning"
+    notes: "Completion finalizes the active processing path."
 
-* stage_id: "stage-008"
-  stage_name: "completion"
-  stage_order: 8
-  stage_type: "processing"
-  responsible_layer: "ai_agent_layer"
-  input_signal: "approval_signal"
-  output_signal: "completion_signal"
-  required_state: "completed"
-  completion_condition: "The approved event is finalized as a completed Earth Brain event."
-  trace_required: true
-  review_required: false
-  failure_action: "archive_with_warning"
-  notes: "Completion finalizes the active processing path."
-
-* stage_id: "stage-009"
-  stage_name: "archive"
-  stage_order: 9
-  stage_type: "archive"
-  responsible_layer: "archive_system"
-  input_signal: "archive_request"
-  output_signal: "archive_record"
-  required_state: "archived"
-  completion_condition: "The completed event and its trace records are archived."
-  trace_required: true
-  review_required: false
-  failure_action: "archive_with_warning"
-  notes: "Archival preserves the event as procedural memory."
+  - stage_id: "stage-009"
+    stage_name: "archive"
+    stage_order: 9
+    stage_type: "archive"
+    responsible_layer: "archive_system"
+    input_signal: "archive_request"
+    output_signal: "archive_record"
+    required_state: "archived"
+    completion_condition: "The completed event and its trace records are archived."
+    trace_required: true
+    review_required: false
+    failure_action: "archive_with_warning"
+    notes: "Archival preserves the event as procedural memory."
 
 stage_transitions:
+  - transition_id: "pipeline-transition-001"
+    from_stage: "intake"
+    to_stage: "schema_validation"
+    condition: "Draft event is created from human intent."
+    on_failure: "request_human_review"
+    lifecycle_state_change: "intake_to_draft"
 
-* transition_id: "pipeline-transition-001"
-  from_stage: "intake"
-  to_stage: "schema_validation"
-  condition: "Draft event is created from human intent."
-  on_failure: "request_human_review"
-  lifecycle_state_change: "intake_to_draft"
+  - transition_id: "pipeline-transition-002"
+    from_stage: "schema_validation"
+    to_stage: "layer_routing"
+    condition: "Schema validation passes."
+    on_failure: "return_to_previous_stage"
+    lifecycle_state_change: "schema_validation_to_layer_routing"
 
-* transition_id: "pipeline-transition-002"
-  from_stage: "schema_validation"
-  to_stage: "layer_routing"
-  condition: "Schema validation passes."
-  on_failure: "return_to_previous_stage"
-  lifecycle_state_change: "schema_validation_to_layer_routing"
+  - transition_id: "pipeline-transition-003"
+    from_stage: "layer_routing"
+    to_stage: "layer_processing"
+    condition: "Routing decision identifies the responsible processing layer."
+    on_failure: "request_human_review"
+    lifecycle_state_change: "layer_routing_to_layer_processing"
 
-* transition_id: "pipeline-transition-003"
-  from_stage: "layer_routing"
-  to_stage: "layer_processing"
-  condition: "Routing decision identifies the responsible processing layer."
-  on_failure: "request_human_review"
-  lifecycle_state_change: "layer_routing_to_layer_processing"
+  - transition_id: "pipeline-transition-004"
+    from_stage: "layer_processing"
+    to_stage: "trace_check"
+    condition: "Layer processing completes and produces a structured result."
+    on_failure: "route_to_defense_review"
+    lifecycle_state_change: "layer_processing_to_trace_check"
 
-* transition_id: "pipeline-transition-004"
-  from_stage: "layer_processing"
-  to_stage: "trace_check"
-  condition: "Layer processing completes and produces a structured result."
-  on_failure: "route_to_defense_review"
-  lifecycle_state_change: "layer_processing_to_trace_check"
+  - transition_id: "pipeline-transition-005"
+    from_stage: "trace_check"
+    to_stage: "human_review"
+    condition: "Trace record is created and review is required."
+    on_failure: "request_human_review"
+    lifecycle_state_change: "trace_check_to_human_review"
 
-* transition_id: "pipeline-transition-005"
-  from_stage: "trace_check"
-  to_stage: "human_review"
-  condition: "Trace record is created and review is required."
-  on_failure: "request_human_review"
-  lifecycle_state_change: "trace_check_to_human_review"
+  - transition_id: "pipeline-transition-006"
+    from_stage: "human_review"
+    to_stage: "approval"
+    condition: "Human reviewer approves the event."
+    on_failure: "reject_event"
+    lifecycle_state_change: "human_review_to_approved"
 
-* transition_id: "pipeline-transition-006"
-  from_stage: "human_review"
-  to_stage: "approval"
-  condition: "Human reviewer approves the event."
-  on_failure: "reject_event"
-  lifecycle_state_change: "human_review_to_approved"
+  - transition_id: "pipeline-transition-007"
+    from_stage: "approval"
+    to_stage: "completion"
+    condition: "Approval signal is confirmed."
+    on_failure: "archive_with_warning"
+    lifecycle_state_change: "approved_to_completed"
 
-* transition_id: "pipeline-transition-007"
-  from_stage: "approval"
-  to_stage: "completion"
-  condition: "Approval signal is confirmed."
-  on_failure: "archive_with_warning"
-  lifecycle_state_change: "approved_to_completed"
+  - transition_id: "pipeline-transition-008"
+    from_stage: "completion"
+    to_stage: "archive"
+    condition: "Completed event is ready for archival."
+    on_failure: "archive_with_warning"
+    lifecycle_state_change: "completed_to_archived"
 
-* transition_id: "pipeline-transition-008"
-  from_stage: "completion"
-  to_stage: "archive"
-  condition: "Completed event is ready for archival."
-  on_failure: "archive_with_warning"
-  lifecycle_state_change: "completed_to_archived"
+  - transition_id: "pipeline-transition-009"
+    from_stage: "layer_processing"
+    to_stage: "defense_review"
+    condition: "Layer processing detects risk or abnormal behavior."
+    on_failure: "suspend_pipeline"
+    lifecycle_state_change: "risk_to_suspended"
 
-* transition_id: "pipeline-transition-009"
-  from_stage: "layer_processing"
-  to_stage: "defense_review"
-  condition: "Layer processing detects risk or abnormal behavior."
-  on_failure: "suspend_pipeline"
-  lifecycle_state_change: "risk_to_suspended"
-
-* transition_id: "pipeline-transition-010"
-  from_stage: "defense_review"
-  to_stage: "suspension"
-  condition: "Defense review detects unresolved risk."
-  on_failure: "suspend_pipeline"
-  lifecycle_state_change: "risk_to_suspended"
+  - transition_id: "pipeline-transition-010"
+    from_stage: "defense_review"
+    to_stage: "suspension"
+    condition: "Defense review detects unresolved risk."
+    on_failure: "suspend_pipeline"
+    lifecycle_state_change: "risk_to_suspended"
 
 operational_controls:
-max_retry_count: 2
-allow_manual_override: true
-allow_pipeline_suspension: true
-require_trace_before_completion: true
-automatic_archive_allowed: true
+  max_retry_count: 2
+  allow_manual_override: true
+  allow_pipeline_suspension: true
+  require_trace_before_completion: true
+  automatic_archive_allowed: true
 
 review_boundaries:
-human_review_required_for_high_impact: true
-governance_review_required_for_policy_change: true
-defense_review_required_for_risk: true
-circulation_review_required_for_value_flow: true
-automatic_completion_allowed: false
+  human_review_required_for_high_impact: true
+  governance_review_required_for_policy_change: true
+  defense_review_required_for_risk: true
+  circulation_review_required_for_value_flow: true
+  automatic_completion_allowed: false
 
 pipeline_summary:
-canonical_path: "intake → schema_validation → layer_routing → layer_processing → trace_check → human_review → approval → completion → archive"
-failure_path: "failed validation or risk detection → human_review / defense_review → rejection or suspension"
-feedback_enabled: true
+  canonical_path: "intake → schema_validation → layer_routing → layer_processing → trace_check → human_review → approval → completion → archive"
+  failure_path: "failed validation or risk detection → human_review / defense_review → rejection or suspension"
+  feedback_enabled: true
 
 status: "draft"
 notes: "Minimal event processing pipeline example for Earth Brain OS v0.5."
+
