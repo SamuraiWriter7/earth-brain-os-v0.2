@@ -1,8 +1,8 @@
-# Earth Brain OS v0.3
+# Earth Brain OS v0.4
 
-**Lifecycle State Machine for a modular civilizational OS-style reference model.**
+**Bidirectional Event Flow for a modular civilizational OS-style reference model.**
 
-Earth Brain OS v0.3 extends the v0.2 Modular Event Architecture by adding lifecycle states, transition rules, transition history, review boundaries, and terminal states.
+Earth Brain OS v0.4 extends the v0.3 Lifecycle State Machine by adding bidirectional event flow across modular layers.
 
 Earth Brain OS is a reference architecture for describing layered AI, optical infrastructure, knowledge, trace attribution, royalty circulation, Kazene-style regulation, defense immunity, and human governance systems.
 
@@ -25,17 +25,23 @@ v0.2 = Modular Event Architecture
 v0.3 = Lifecycle State Machine
        Events gain states, transition rules, transition history,
        review boundaries, and terminal states.
+
+v0.4 = Bidirectional Event Flow
+       Events move forward and return across layers through feedback,
+       trace, review, defense, governance, and human correction paths.
 ```
 
 In short:
 
 ```text
 v0.2 = What layers exist?
-v0.3 = How does an event move through them?
+v0.3 = How does an event move through states?
+v0.4 = How do layers send events forward and return signals back?
 ```
 
 v0.2 gives Earth Brain OS its modular body.
-v0.3 gives that body pulse, flow, and procedural memory.
+v0.3 gives that body pulse and procedural memory.
+v0.4 gives the system circulation and return flow.
 
 ---
 
@@ -63,11 +69,18 @@ schemas/earth-brain-event.schema.json
    └─ $ref: ./layers/ai-agent-layer.schema.json
 ```
 
-v0.3 adds lifecycle modeling alongside the modular event schema.
+v0.3 adds lifecycle modeling:
 
 ```text
 schemas/earth-brain-lifecycle.schema.json
 └─ governs an Earth Brain event through states and transitions
+```
+
+v0.4 adds bidirectional flow modeling:
+
+```text
+schemas/earth-brain-bidirectional-flow.schema.json
+└─ defines forward and return paths across Earth Brain OS layers
 ```
 
 ---
@@ -81,13 +94,16 @@ earth-brain-os/
 ├─ schemas/
 │  ├─ earth-brain-event.schema.json
 │  ├─ earth-brain-lifecycle.schema.json
+│  ├─ earth-brain-bidirectional-flow.schema.json
 │  └─ layers/
 │     └─ ai-agent-layer.schema.json
 ├─ examples/
 │  ├─ earth-brain-event.example.yaml
-│  └─ earth-brain-lifecycle.example.yaml
+│  ├─ earth-brain-lifecycle.example.yaml
+│  └─ earth-brain-bidirectional-flow.example.yaml
 ├─ docs/
-│  └─ event-lifecycle-state-machine.md
+│  ├─ event-lifecycle-state-machine.md
+│  └─ bidirectional-event-flow.md
 ├─ scripts/
 │  └─ validate_examples.py
 └─ .github/
@@ -154,7 +170,7 @@ It includes fields for:
 * human review boundary
 * operational status
 
-This layer is intentionally designed as the first modular component because AI agents are the routing, reasoning, and coordination interface between human governance, knowledge, trace, defense, and circulation systems.
+This layer is the first modular component because AI agents are the routing, reasoning, and coordination interface between human governance, knowledge, trace, defense, and circulation systems.
 
 ---
 
@@ -184,9 +200,34 @@ This schema turns an event from a static record into a governed process.
 
 ---
 
+### Bidirectional Flow Schema
+
+```text
+schemas/earth-brain-bidirectional-flow.schema.json
+```
+
+The bidirectional flow schema defines how an Earth Brain event moves forward and returns across layers.
+
+It includes:
+
+* flow identity
+* linked Earth Brain event ID
+* linked lifecycle ID
+* active direction
+* participating layers
+* flow edges
+* return paths
+* review boundaries
+* flow summary
+* operational status
+
+This schema prevents Earth Brain OS events from becoming one-way commands.
+
+---
+
 ## Lifecycle State Machine
 
-v0.3 introduces the following lifecycle states:
+v0.3 introduced the following lifecycle states:
 
 ```text
 intake
@@ -230,16 +271,95 @@ completed
 archived
 ```
 
-Alternative paths include:
+---
+
+## Bidirectional Event Flow
+
+v0.4 introduces bidirectional event movement.
+
+A simple one-way flow looks like this:
 
 ```text
-human_review → rejected
-defense_review → suspended
-trace_check → governance_review → approved
-trace_check → circulation_review → approved
+human → AI → output
 ```
 
-The lifecycle model makes high-impact events reviewable instead of silently executable.
+Earth Brain OS v0.4 models a richer flow:
+
+```text
+human → AI → trace → review → governance
+governance / defense / trace / human feedback → AI → human
+```
+
+The core idea is:
+
+> An event should not only move forward.
+> It should also know how to return.
+
+---
+
+## Forward Flow
+
+The current minimal forward path is:
+
+```text
+human_governance_layer
+  ↓
+ai_agent_layer
+  ↓
+trace_attribution_layer
+  ↓
+human_governance_layer
+```
+
+This allows a human intent to be processed by the AI Agent Layer, connected to trace attribution, and returned to the human governance layer for review.
+
+---
+
+## Return Flow
+
+Return flow may carry:
+
+* human feedback
+* governance feedback
+* defense feedback
+* trace feedback
+* circulation feedback
+* Kazene regulation feedback
+* error feedback
+* suspension feedback
+
+Example return paths:
+
+```text
+human_governance_layer → ai_agent_layer
+trace_attribution_layer → ai_agent_layer
+defense_immune_layer → ai_agent_layer
+```
+
+This makes the system adaptive instead of merely executable.
+
+---
+
+## Defense Interruption
+
+The Defense Immune Layer may interrupt the flow when risk is detected.
+
+```text
+defense_immune_layer
+  ↓
+ai_agent_layer
+```
+
+This can occur when an event involves:
+
+* adversarial input
+* prompt injection risk
+* manipulation attempts
+* unsafe routing
+* uncertain reasoning
+* abnormal event behavior
+
+The defense layer can return safer routing signals instead of simply blocking the event.
 
 ---
 
@@ -251,18 +371,15 @@ The lifecycle model makes high-impact events reviewable instead of silently exec
 docs/event-lifecycle-state-machine.md
 ```
 
-This document explains:
+Explains the v0.3 lifecycle model.
 
-* lifecycle purpose
-* state definitions
-* default transition flow
-* alternative review paths
-* transition rules
-* transition history
-* transition actors
-* review boundaries
-* terminal states
-* relationship to v0.2, v0.4, and v0.5
+### Bidirectional Event Flow
+
+```text
+docs/bidirectional-event-flow.md
+```
+
+Explains the v0.4 bidirectional flow model.
 
 ---
 
@@ -276,21 +393,6 @@ examples/earth-brain-event.example.yaml
 
 A minimal valid Earth Brain OS event using the AI Agent Layer module.
 
-Example fragment:
-
-```yaml
-layers:
-  ai_agent_layer:
-    layer_id: "ai-agent-layer-001"
-    layer_name: "AI Agent Layer"
-    layer_version: "v0.2.0"
-    agent_role: "orchestrator"
-    agent_type: "human_ai_team"
-    autonomy_level: "human_confirmed_action"
-```
-
----
-
 ### Earth Brain Lifecycle Example
 
 ```text
@@ -299,15 +401,23 @@ examples/earth-brain-lifecycle.example.yaml
 
 A minimal valid lifecycle record linked to an Earth Brain event.
 
+### Earth Brain Bidirectional Flow Example
+
+```text
+examples/earth-brain-bidirectional-flow.example.yaml
+```
+
+A minimal valid bidirectional flow record linked to an Earth Brain event and lifecycle.
+
 Example fragment:
 
 ```yaml
-lifecycle_id: "earth-brain-lifecycle-001"
-version: "v0.3.0"
+flow_id: "earth-brain-flow-001"
+version: "v0.4.0"
+flow_model: "Earth Brain Bidirectional Event Flow"
 earth_brain_event_id: "earth-brain-event-001"
-lifecycle_model: "Earth Brain Lifecycle State Machine"
-initial_state: "intake"
-current_state: "schema_validation"
+lifecycle_id: "earth-brain-lifecycle-001"
+active_direction: "feedback_loop"
 ```
 
 ---
@@ -328,6 +438,9 @@ examples/earth-brain-event.example.yaml
 
 examples/earth-brain-lifecycle.example.yaml
 → schemas/earth-brain-lifecycle.schema.json
+
+examples/earth-brain-bidirectional-flow.example.yaml
+→ schemas/earth-brain-bidirectional-flow.schema.json
 ```
 
 Run validation locally:
@@ -381,21 +494,30 @@ The top-level event should coordinate layers without becoming a fragile monolith
 Events should not only contain data.
 They should remember how they moved through the system.
 
-### 4. Trace-Aware by Design
+### 4. Bidirectional Flow
+
+Events should be able to move forward, return, request review, trigger defense, and carry feedback.
+
+### 5. Trace-Aware by Design
 
 AI activity should be connected to trace, attribution, and review boundaries.
 
-### 5. Human Governance Boundary
+### 6. Human Governance Boundary
 
 AI agents may assist, route, and reason, but high-impact actions should remain connected to human review.
 
-### 6. Suspension Over Silent Failure
+### 7. Suspension Over Silent Failure
 
 Risky or uncertain events should be suspendable rather than forcibly completed or silently ignored.
 
-### 7. Incremental Expansion
+### 8. Defense as Circulation
 
-New layers and lifecycle mechanisms should be added one at a time, with validation passing at each step.
+Defense should not only block events.
+It should be able to interrupt, redirect, and return safer signals.
+
+### 9. Incremental Expansion
+
+New layers and flow mechanisms should be added one at a time, with validation passing at each step.
 
 ---
 
@@ -414,18 +536,7 @@ Implemented:
 
 ### v0.3 — Lifecycle State Machine
 
-Current focus:
-
-* lifecycle schema
-* event state definitions
-* transition rules
-* transition history
-* review boundaries
-* terminal states
-* lifecycle documentation
-* lifecycle example validation
-
-Implemented files:
+Implemented:
 
 ```text
 schemas/earth-brain-lifecycle.schema.json
@@ -433,18 +544,35 @@ docs/event-lifecycle-state-machine.md
 examples/earth-brain-lifecycle.example.yaml
 ```
 
+Focus:
+
+* lifecycle schema
+* event state definitions
+* transition rules
+* transition history
+* review boundaries
+* terminal states
+
 ---
 
 ### v0.4 — Bidirectional Event Flow
 
-Planned direction:
+Implemented:
 
 ```text
-human → AI → trace → circulation → governance
-governance → regulation → defense → AI → human
+schemas/earth-brain-bidirectional-flow.schema.json
+docs/bidirectional-event-flow.md
+examples/earth-brain-bidirectional-flow.example.yaml
 ```
 
-v0.4 may define directional relationships between human, AI, trace, circulation, regulation, defense, and governance layers.
+Focus:
+
+* forward flow
+* return flow
+* feedback loops
+* defense interruption
+* trace feedback
+* human review return paths
 
 ---
 
@@ -471,21 +599,26 @@ Earth Brain OS v0.2
 
 Earth Brain OS v0.3
 = Lifecycle state machine for modular events
+
+Earth Brain OS v0.4
+= Bidirectional event flow across modular layers
 ```
 
 v0.1 provides the integrated conceptual map.
 v0.2 provides the modular schema architecture.
 v0.3 provides procedural movement, state, and review boundaries.
+v0.4 provides circulation, return paths, and feedback-aware flow.
 
 ---
 
 ## Status
 
 ```text
-Version: v0.3.0-candidate
-Architecture: Modular Event Architecture + Lifecycle State Machine
+Version: v0.4.0-candidate
+Architecture: Modular Event Architecture + Lifecycle State Machine + Bidirectional Event Flow
 Current module: AI Agent Layer
 Lifecycle model: Enabled
+Bidirectional flow model: Enabled
 Validation: GitHub Actions enabled
 ```
 
@@ -511,14 +644,18 @@ Apache License 2.0
 
 ## Summary
 
-Earth Brain OS v0.3 turns the modular Earth Brain OS event model into a procedural architecture.
+Earth Brain OS v0.4 turns the modular lifecycle model into a bidirectional circulatory architecture.
 
 v0.2 separated the layers.
-v0.3 defines how events move through those layers.
+v0.3 defined how events move through states.
+v0.4 defines how events move forward and return across layers.
 
-The event now has a path.
-The path now has memory.
-The memory now has review boundaries.
+The event moves forward.
+The trace returns.
+The defense interrupts.
+The human reviews.
+The AI refines.
+The system remembers.
 
 The goal is not to build a centralized world system.
 
