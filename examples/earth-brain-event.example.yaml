@@ -10,7 +10,6 @@ layer_name: "AI Agent Layer"
 layer_version: "v0.2.0"
 purpose: "Coordinate AI agents that interpret, reason, assist, and route events across the Earth Brain OS."
 
-```
 agent_role: "orchestrator"
 agent_type: "human_ai_team"
 autonomy_level: "human_confirmed_action"
@@ -55,4 +54,3 @@ human_review_boundary:
 
 status: "draft"
 notes: "Initial minimal AI Agent Layer example for Earth Brain OS v0.2 Modular Event Architecture."
-```
