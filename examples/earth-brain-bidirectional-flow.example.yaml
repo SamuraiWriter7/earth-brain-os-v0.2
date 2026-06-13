@@ -1,0 +1,115 @@
+flow_id: "earth-brain-flow-001"
+version: "v0.4.0"
+flow_model: "Earth Brain Bidirectional Event Flow"
+earth_brain_event_id: "earth-brain-event-001"
+lifecycle_id: "earth-brain-lifecycle-001"
+
+flow_purpose: "Define a bidirectional flow where a human intent is processed by the AI Agent Layer, checked through trace, reviewed by the human governance layer, and returned as feedback to the AI and human layers."
+
+active_direction: "feedback_loop"
+
+participating_layers:
+
+* "human_governance_layer"
+* "ai_agent_layer"
+* "trace_attribution_layer"
+* "defense_immune_layer"
+
+flow_edges:
+
+* edge_id: "flow-edge-001"
+  direction: "forward"
+  source_layer: "human_governance_layer"
+  target_layer: "ai_agent_layer"
+  signal_type: "human_intent"
+  condition: "A human operator submits an intent or question to the AI Agent Layer."
+  trace_required: true
+  review_required: false
+  lifecycle_state_hint: "intake"
+  notes: "Initial human-to-AI event flow."
+
+* edge_id: "flow-edge-002"
+  direction: "forward"
+  source_layer: "ai_agent_layer"
+  target_layer: "trace_attribution_layer"
+  signal_type: "trace_update"
+  condition: "The AI Agent Layer generates a trace-aware reasoning result."
+  trace_required: true
+  review_required: false
+  lifecycle_state_hint: "trace_check"
+  notes: "AI output is connected to trace attribution."
+
+* edge_id: "flow-edge-003"
+  direction: "forward"
+  source_layer: "trace_attribution_layer"
+  target_layer: "human_governance_layer"
+  signal_type: "review_request"
+  condition: "Trace check indicates that human review is required before completion."
+  trace_required: true
+  review_required: true
+  lifecycle_state_hint: "human_review"
+  notes: "Trace layer requests human review."
+
+* edge_id: "flow-edge-004"
+  direction: "return"
+  source_layer: "human_governance_layer"
+  target_layer: "ai_agent_layer"
+  signal_type: "feedback_signal"
+  condition: "Human review sends clarification or correction back to the AI Agent Layer."
+  trace_required: true
+  review_required: true
+  lifecycle_state_hint: "human_review"
+  notes: "Human feedback returns to AI for refinement."
+
+* edge_id: "flow-edge-005"
+  direction: "feedback"
+  source_layer: "defense_immune_layer"
+  target_layer: "ai_agent_layer"
+  signal_type: "defense_signal"
+  condition: "Defense review detects possible risk and requests safer routing."
+  trace_required: true
+  review_required: true
+  lifecycle_state_hint: "defense_review"
+  notes: "Defense layer can interrupt and redirect the flow."
+
+return_paths:
+
+* path_id: "return-path-001"
+  return_type: "human_feedback"
+  from_layer: "human_governance_layer"
+  to_layer: "ai_agent_layer"
+  trigger: "Human reviewer requests clarification from the AI Agent Layer."
+  requires_human_attention: true
+  trace_reference: "trace-record-001"
+
+* path_id: "return-path-002"
+  return_type: "trace_feedback"
+  from_layer: "trace_attribution_layer"
+  to_layer: "ai_agent_layer"
+  trigger: "Trace attribution requires additional source or decision-log information."
+  requires_human_attention: false
+  trace_reference: "trace-record-002"
+
+* path_id: "return-path-003"
+  return_type: "defense_feedback"
+  from_layer: "defense_immune_layer"
+  to_layer: "ai_agent_layer"
+  trigger: "Defense review detects risk and requests constrained reasoning."
+  requires_human_attention: true
+  trace_reference: "defense-review-001"
+
+review_boundaries:
+human_review_on_return_required: true
+governance_review_on_policy_change_required: true
+defense_review_on_risk_required: true
+trace_required_for_all_edges: true
+automatic_forward_flow_allowed: true
+automatic_return_flow_allowed: false
+
+flow_summary:
+forward_path: "human_governance_layer → ai_agent_layer → trace_attribution_layer → human_governance_layer"
+return_path: "human_governance_layer / trace_attribution_layer / defense_immune_layer → ai_agent_layer → human_governance_layer"
+feedback_loop_enabled: true
+
+status: "draft"
+notes: "Minimal bidirectional flow example for Earth Brain OS v0.4."
