@@ -1,0 +1,129 @@
+lifecycle_id: "earth-brain-lifecycle-001"
+version: "v0.3.0"
+earth_brain_event_id: "earth-brain-event-001"
+lifecycle_model: "Earth Brain Lifecycle State Machine"
+
+initial_state: "intake"
+current_state: "schema_validation"
+
+allowed_states:
+
+* "intake"
+* "draft"
+* "schema_validation"
+* "layer_routing"
+* "layer_processing"
+* "trace_check"
+* "human_review"
+* "governance_review"
+* "defense_review"
+* "circulation_review"
+* "approved"
+* "completed"
+* "archived"
+* "rejected"
+* "suspended"
+
+transition_rules:
+
+* from_state: "intake"
+  to_state: "draft"
+  condition: "Initial event record is created."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "draft"
+  to_state: "schema_validation"
+  condition: "Draft event is ready for schema validation."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "schema_validation"
+  to_state: "layer_routing"
+  condition: "Schema validation passes."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "layer_routing"
+  to_state: "layer_processing"
+  condition: "Event is routed to the appropriate modular layer."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "layer_processing"
+  to_state: "trace_check"
+  condition: "Layer processing is completed and trace verification is required."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "trace_check"
+  to_state: "human_review"
+  condition: "Trace check identifies a high-impact or uncertain event."
+  requires_review: true
+  review_type: "human_review"
+
+* from_state: "human_review"
+  to_state: "approved"
+  condition: "Human reviewer approves the event."
+  requires_review: true
+  review_type: "human_review"
+
+* from_state: "approved"
+  to_state: "completed"
+  condition: "Approved event is finalized."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "completed"
+  to_state: "archived"
+  condition: "Completed event is stored for future reference."
+  requires_review: false
+  review_type: "none"
+
+* from_state: "human_review"
+  to_state: "rejected"
+  condition: "Human reviewer rejects the event."
+  requires_review: true
+  review_type: "human_review"
+
+* from_state: "defense_review"
+  to_state: "suspended"
+  condition: "Defense review detects unresolved risk."
+  requires_review: true
+  review_type: "defense_review"
+
+transition_history:
+
+* transition_id: "transition-001"
+  timestamp: "2026-06-13T00:00:00Z"
+  from_state: "intake"
+  to_state: "draft"
+  transition_actor: "system"
+  transition_reason: "Initial lifecycle record created for the Earth Brain event."
+  validation_result: "not_applicable"
+
+* transition_id: "transition-002"
+  timestamp: "2026-06-13T00:05:00Z"
+  from_state: "draft"
+  to_state: "schema_validation"
+  transition_actor: "validation_script"
+  transition_reason: "The event was submitted for schema validation."
+  validation_result: "passed"
+  review_reference: "schemas/earth-brain-event.schema.json"
+
+review_boundaries:
+human_review_required: true
+governance_review_required: false
+defense_review_required: false
+circulation_review_required: false
+automatic_completion_allowed: false
+
+terminal_states:
+
+* "completed"
+* "archived"
+* "rejected"
+* "suspended"
+
+status: "draft"
+notes: "Minimal lifecycle example for Earth Brain OS v0.3 Lifecycle State Machine."
